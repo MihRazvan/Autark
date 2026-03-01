@@ -27,7 +27,7 @@ SAFE_API_KEY=sk_...
 SEPOLIA_OWNER_PK=0x...
 ```
 
-Optionally create `secure-deploy.config.yaml` via:
+Optionally create `autark.config.yaml` via:
 
 ```bash
 npm run cli -- init

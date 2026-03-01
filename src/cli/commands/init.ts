@@ -15,7 +15,7 @@ export async function initCommand(): Promise<void> {
   logger.header('🔧 Initialize AUTARK')
   logger.newline()
 
-  const configTemplate = `# Secure Deploy Configuration
+  const configTemplate = `# AUTARK Configuration
 # You can also use environment variables or CLI flags
 
 # Network Configuration
@@ -46,10 +46,10 @@ debug: false
 `
 
   try {
-    const configPath = resolve(process.cwd(), 'secure-deploy.config.yaml')
+    const configPath = resolve(process.cwd(), 'autark.config.yaml')
     writeFileSync(configPath, configTemplate)
 
-    logger.success('Created config file: secure-deploy.config.yaml')
+    logger.success('Created config file: autark.config.yaml')
     logger.newline()
 
     logger.log('Next steps:')
