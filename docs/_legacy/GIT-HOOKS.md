@@ -1,12 +1,12 @@
 # Git Hooks - Automatic Deployment
 
-Enable automatic deployments triggered by `git push` using secure-deploy's built-in git hooks.
+Enable automatic deployments triggered by `git push` using autark's built-in git hooks.
 
 ## Quick Start
 
 ```bash
 # In your project directory
-npx secure-deploy setup
+autark setup
 
 # Follow the prompts:
 # - Which branch? [staging]
@@ -19,7 +19,7 @@ git push origin staging  # Auto-deploys! 🚀
 
 ## How It Works
 
-When you run `secure-deploy setup`, it installs a **pre-push git hook** that:
+When you run `autark setup`, it installs a **pre-push git hook** that:
 
 1. ✅ Detects when you push to the deployment branch (e.g., `staging`)
 2. 🏗️ Runs your build if needed
@@ -35,7 +35,7 @@ When you run `secure-deploy setup`, it installs a **pre-push git hook** that:
 ### Interactive Setup (Recommended)
 
 ```bash
-npx secure-deploy setup
+autark setup
 ```
 
 Prompts you for:
@@ -46,10 +46,10 @@ Prompts you for:
 
 ```bash
 # Specify branch via flag
-npx secure-deploy setup --branch main
+autark setup --branch main
 
 # Force overwrite existing hook
-npx secure-deploy setup --force
+autark setup --force
 ```
 
 ## Example Workflows
@@ -78,7 +78,7 @@ git push origin main  # 🚀 Production deployment!
 ```bash
 $ git push origin staging
 
-🚀 secure-deploy: Auto-deploying staging branch...
+🚀 autark: Auto-deploying staging branch...
 
 📦 Step 3: Upload to IPFS
 ✔ Uploaded: bafybei...
@@ -130,7 +130,7 @@ cat .git/hooks/pre-push
 nano .git/hooks/pre-push
 
 # Or regenerate it
-npx secure-deploy setup --force
+autark setup --force
 ```
 
 ## Managing Hooks
@@ -166,7 +166,7 @@ rm .git/hooks/pre-push
 ### Reinstall
 
 ```bash
-npx secure-deploy setup --force
+autark setup --force
 ```
 
 ## Multiple Branches
@@ -189,9 +189,9 @@ Example multi-branch hook:
 branch=$(git symbolic-ref --short HEAD 2>/dev/null)
 
 if [[ "$branch" == "staging" ]]; then
-  npx secure-deploy deploy dist --ens-domain staging.yourproject.eth
+  autark deploy dist --ens-domain staging.yourproject.eth
 elif [[ "$branch" == "main" ]]; then
-  npx secure-deploy deploy dist --ens-domain yourproject.eth
+  autark deploy dist --ens-domain yourproject.eth
 fi
 ```
 
@@ -254,14 +254,14 @@ Git hooks are **not** committed to the repository by default. To share with your
 ```markdown
 ## Setup
 1. npm install
-2. npx secure-deploy setup
+2. autark setup
 ```
 
 **Option 2: Add to package.json postinstall**
 ```json
 {
   "scripts": {
-    "postinstall": "npx secure-deploy setup --branch staging --force"
+    "postinstall": "autark setup --branch staging --force"
   }
 }
 ```
@@ -287,7 +287,7 @@ Git hooks are **not** committed to the repository by default. To share with your
 
 ## Advanced: Post-Commit vs Pre-Push
 
-Currently, secure-deploy uses **pre-push** hooks. Here's why:
+Currently, autark uses **pre-push** hooks. Here's why:
 
 **Pre-Push (Current)**
 - ✅ Runs before code reaches remote
@@ -307,7 +307,7 @@ cat > .git/hooks/post-commit << 'EOF'
 #!/bin/bash
 branch=$(git symbolic-ref --short HEAD)
 if [[ "$branch" == "staging" ]]; then
-  npx secure-deploy deploy dist
+  autark deploy dist
 fi
 EOF
 chmod +x .git/hooks/post-commit
@@ -330,7 +330,7 @@ chmod +x .git/hooks/post-commit
 
 ```bash
 # One-time setup
-npx secure-deploy setup
+autark setup
 
 # Then deploy anytime with:
 git push origin staging

@@ -289,7 +289,7 @@ Users who want latest can use myapp.eth → points to latest
 
 **Could have required user to specify:**
 ```bash
-autark deploy dist --mode safe-owns-parent
+autark deploy dist
 ```
 
 **Instead, we auto-detect:**
