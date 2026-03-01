@@ -296,7 +296,11 @@ export async function deployCommand(options: DeployOptions): Promise<void> {
         chain.id,
         batchResult,
         config.ownerPrivateKey!,
-        logger
+        logger,
+        {
+          rpcUrl: config.rpcUrl,
+          safeApiKey: config.safeApiKey,
+        }
       )
 
       spinner.succeed('Batch transaction submitted to Safe')

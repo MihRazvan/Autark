@@ -12,7 +12,7 @@ import { Logger } from '../../lib/logger.js'
 export async function initCommand(): Promise<void> {
   const logger = new Logger()
 
-  logger.header('🔧 Initialize secure-deploy')
+  logger.header('🔧 Initialize AUTARK')
   logger.newline()
 
   const configTemplate = `# Secure Deploy Configuration
@@ -55,7 +55,7 @@ debug: false
     logger.log('Next steps:')
     logger.log('  1. Edit the config file with your values')
     logger.log('  2. Or use environment variables (see .env.example)')
-    logger.log('  3. Deploy with: secure-deploy deploy ./dist')
+    logger.log('  3. Deploy with: autark deploy ./dist')
     logger.newline()
 
   } catch (error: any) {

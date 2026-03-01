@@ -171,7 +171,7 @@ export async function setupCommand(options: SetupOptions): Promise<void> {
     logger.section('🔧 Managing hooks')
     logger.log('  View hook: cat .git/hooks/pre-push')
     logger.log('  Remove hook: rm .git/hooks/pre-push')
-    logger.log('  Reinstall: npx secure-deploy setup --force')
+    logger.log('  Reinstall: autark setup --force')
     logger.newline()
 
   } catch (error: any) {

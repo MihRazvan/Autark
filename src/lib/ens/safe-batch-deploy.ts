@@ -5,6 +5,7 @@
 import { encodeFunctionData, parseAbi, type Address, type Hex } from 'viem'
 import { normalize, namehash } from 'viem/ens'
 import { NAME_WRAPPER_ADDRESS } from './namewrapper/wrapper.js'
+import { FUSES } from './namewrapper/fuses.js'
 import { PUBLIC_RESOLVER_ADDRESS } from './ens.js'
 import { encodeContenthash } from './contenthash-encode.js'
 import { ENSError } from '../errors.js'
@@ -61,7 +62,10 @@ export async function encodeSafeBatchDeploy(
   const resolverAddress = PUBLIC_RESOLVER_ADDRESS[chainId === 11155111 ? 'sepolia' : 'mainnet'] as Address
 
   // Fuses: CANNOT_UNWRAP | CANNOT_SET_RESOLVER | PARENT_CANNOT_CONTROL
-  const fuses = 0x0001 | 0x0080 | 0x10000
+  const fuses =
+    FUSES.CANNOT_UNWRAP |
+    FUSES.CANNOT_SET_RESOLVER |
+    FUSES.PARENT_CANNOT_CONTROL
 
   const createSubdomainData = encodeFunctionData({
     abi: wrapperAbi,
@@ -112,7 +116,11 @@ export async function submitToSafeService(
   chainId: number,
   batchResult: SafeBatchResult,
   signerPrivateKey: `0x${string}`,
-  logger: Logger
+  logger: Logger,
+  options?: {
+    rpcUrl?: string
+    safeApiKey?: string
+  }
 ): Promise<string> {
   const spinner = logger.spinner('Submitting batch to Safe Transaction Service...')
   spinner.start()
@@ -124,9 +132,11 @@ export async function submitToSafeService(
     const { ethers } = await import('ethers')
 
     // Setup RPC URL
-    const rpcUrl = chainId === 11155111
-      ? process.env.SEPOLIA_RPC_URL
-      : process.env.MAINNET_RPC_URL
+    const rpcUrl =
+      options?.rpcUrl ||
+      (chainId === 11155111
+        ? process.env.SEPOLIA_RPC_URL
+        : process.env.MAINNET_RPC_URL)
 
     if (!rpcUrl) {
       throw new Error('RPC URL not configured')
@@ -137,7 +147,7 @@ export async function submitToSafeService(
     const signer = new ethers.Wallet(signerPrivateKey, provider)
 
     // Create Safe API Kit instance
-    const safeApiKey = process.env.SAFE_API_KEY
+    const safeApiKey = options?.safeApiKey || process.env.SAFE_API_KEY
     if (!safeApiKey) {
       throw new Error('SAFE_API_KEY not configured. Get one at https://developer.safe.global')
     }
