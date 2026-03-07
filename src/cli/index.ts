@@ -89,6 +89,7 @@ export function createProgram(handlers: CliHandlers = {
     .command('setup')
     .description('Setup git hooks for automatic deployment')
     .option('--branch <branch>', 'Branch to trigger deployments (default: staging)')
+    .option('--build-command <command>', 'Command to build deployment output before deploy (default: npm run build)')
     .option('--force', 'Overwrite existing hooks')
     .option('--quiet', 'Minimal output')
     .option('--debug', 'Debug output')

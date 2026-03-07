@@ -2,7 +2,6 @@
  * Safe multisig client wrapper
  */
 
-import { createSafeClient } from '@safe-global/sdk-starter-kit'
 import type { Address, Hex } from 'viem'
 import { SafeError } from '../errors.js'
 
@@ -36,6 +35,8 @@ export async function initSafeClient(config: SafeClientConfig) {
   }
 
   try {
+    const { createSafeClient } = await import('@safe-global/sdk-starter-kit')
+
     const client = await createSafeClient({
       provider: config.rpcUrl,
       signer: config.signerPrivateKey,

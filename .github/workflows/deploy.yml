@@ -29,7 +29,7 @@ jobs:
         run: npm run build
 
       - name: Install Storacha CLI
-        run: npm install -g @storacha/client
+        run: npm install -g @storacha/cli
 
       - name: Setup Storacha credentials
         if: ${{ secrets.STORACHA_TOKEN != '' }}

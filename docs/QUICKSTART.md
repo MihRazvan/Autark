@@ -56,6 +56,8 @@ npm run cli -- status --subdomain v0.your-domain.eth
 
 ```bash
 npm run cli -- setup
+# or pass an explicit build command for custom output dirs
+npm run cli -- setup --branch staging --build-command "npm run build"
 ```
 
 This installs `.git/hooks/pre-push` to trigger deploy proposals on a selected branch.

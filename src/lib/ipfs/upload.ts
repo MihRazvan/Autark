@@ -34,7 +34,7 @@ export async function uploadToIPFS(
     } catch {
       spinner.fail()
       throw new IPFSError(
-        'Storacha CLI not found. Install with: npm install -g @storacha/client'
+        'Storacha CLI not found. Install with: npm install -g @storacha/cli'
       )
     }
 

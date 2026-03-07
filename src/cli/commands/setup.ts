@@ -12,6 +12,7 @@ export interface SetupOptions {
   debug?: boolean
   force?: boolean
   branch?: string
+  buildCommand?: string
 }
 
 const PRE_PUSH_HOOK_TEMPLATE = `#!/bin/bash
@@ -23,16 +24,18 @@ branch=$(git symbolic-ref --short HEAD 2>/dev/null)
 
 # Check if this is the deployment branch
 DEPLOY_BRANCH="{{DEPLOY_BRANCH}}"
+BUILD_DIR="{{BUILD_DIR}}"
+BUILD_COMMAND="{{BUILD_COMMAND}}"
 
 if [[ "$branch" == "$DEPLOY_BRANCH" ]]; then
   echo ""
   echo "[>  ] autark: Auto-deploying $branch branch..."
   echo ""
 
-  # Check if build directory exists
-  if [ ! -d "{{BUILD_DIR}}" ]; then
-    echo "[!] Build directory not found. Running build..."
-    npm run build
+  # Run build command before deployment
+  if [ -n "$BUILD_COMMAND" ]; then
+    echo "[>  ] Running build command..."
+    eval "$BUILD_COMMAND"
 
     if [ $? -ne 0 ]; then
       echo "[-] Build failed. Push cancelled."
@@ -40,8 +43,15 @@ if [[ "$branch" == "$DEPLOY_BRANCH" ]]; then
     fi
   fi
 
+  # Check that build output exists
+  if [ ! -d "$BUILD_DIR" ]; then
+    echo "[-] Build directory not found: $BUILD_DIR"
+    echo "    Update hook build command or build output directory."
+    exit 1
+  fi
+
   # Run deployment using autark CLI
-  autark deploy {{BUILD_DIR}}
+  autark deploy "$BUILD_DIR"
 
   # Check if deployment succeeded
   if [ $? -ne 0 ]; then
@@ -90,6 +100,7 @@ export async function setupCommand(options: SetupOptions): Promise<void> {
 
   // Ask for build directory
   const buildDir = await rl.question('Build output directory? [dist]: ') || 'dist'
+  const buildCommand = options.buildCommand || await rl.question('Build command before deploy? [npm run build]: ') || 'npm run build'
 
   rl.close()
 
@@ -97,6 +108,7 @@ export async function setupCommand(options: SetupOptions): Promise<void> {
   logger.log('Configuration:')
   logger.log(`  Deployment branch: ${deployBranch}`)
   logger.log(`  Build directory: ${buildDir}`)
+  logger.log(`  Build command: ${buildCommand}`)
   logger.newline()
 
   // Confirm
@@ -122,9 +134,15 @@ export async function setupCommand(options: SetupOptions): Promise<void> {
   }
 
   // Generate pre-push hook
+  const escapedBuildDir = buildDir.replace(/"/g, '\\"')
+  const escapedBuildCommand = buildCommand
+    .replace(/\\/g, '\\\\')
+    .replace(/"/g, '\\"')
+
   const hookContent = PRE_PUSH_HOOK_TEMPLATE
     .replace(/\{\{DEPLOY_BRANCH\}\}/g, deployBranch)
-    .replace(/\{\{BUILD_DIR\}\}/g, buildDir)
+    .replace(/\{\{BUILD_DIR\}\}/g, escapedBuildDir)
+    .replace(/\{\{BUILD_COMMAND\}\}/g, escapedBuildCommand)
 
   const hookPath = join(hooksDir, 'pre-push')
 
