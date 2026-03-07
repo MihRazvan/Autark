@@ -1,0 +1,28 @@
+# Secure Deploy Configuration
+# You can also use environment variables or CLI flags
+
+# Network Configuration
+network: sepolia
+rpcUrl: https://ethereum-sepolia-rpc.publicnode.com
+
+# ENS Configuration
+ensDomain: your-domain.eth
+
+# Safe Multisig Configuration
+safeAddress: 0x...
+safeApiKey: your-safe-api-key
+
+# Owner/Signer Configuration (for Safe operations)
+ownerPrivateKey: 0x...
+
+# Storacha Configuration (optional, uses CLI by default)
+# storachaKey: ...
+# storachaProof: ...
+
+# GitHub Configuration (optional)
+# githubToken: ghp_...
+# githubRepo: owner/repo
+
+# CLI Options
+quiet: false
+debug: false
