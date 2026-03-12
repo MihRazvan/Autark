@@ -122,6 +122,7 @@ test('smoke: CLI deploy flags map to expected option keys', async () => {
     status: async () => {},
     init: async () => {},
     setup: async () => {},
+    promote: async () => {},
   })
 
   await program.parseAsync(
@@ -160,4 +161,57 @@ test('smoke: CLI deploy flags map to expected option keys', async () => {
   assert.equal(capturedDeployOptions?.dryRun, true)
   assert.equal(capturedDeployOptions?.skipGitCheck, true)
   assert.equal(capturedDeployOptions?.quiet, true)
+})
+
+test('smoke: CLI promote flags map to expected option keys', async () => {
+  let capturedPromoteOptions: Record<string, unknown> | undefined
+
+  const program = createProgram({
+    deploy: async () => {},
+    status: async () => {},
+    init: async () => {},
+    setup: async () => {},
+    promote: async (opts) => {
+      capturedPromoteOptions = opts as unknown as Record<string, unknown>
+    },
+  })
+
+  await program.parseAsync(
+    [
+      'node',
+      'autark',
+      'promote',
+      '--to',
+      'v2',
+      '--channel',
+      'live',
+      '--ens-domain',
+      'mapped.eth',
+      '--safe-address',
+      '0x3333333333333333333333333333333333333333',
+      '--owner-private-key',
+      '0x4444444444444444444444444444444444444444444444444444444444444444',
+      '--rpc-url',
+      'https://rpc.mapping.example',
+      '--safe-api-key',
+      'mapping-key',
+      '--network',
+      'sepolia',
+      '--dry-run',
+      '--quiet',
+    ],
+    { from: 'node' }
+  )
+
+  assert.ok(capturedPromoteOptions)
+  assert.equal(capturedPromoteOptions?.to, 'v2')
+  assert.equal(capturedPromoteOptions?.channel, 'live')
+  assert.equal(capturedPromoteOptions?.ensDomain, 'mapped.eth')
+  assert.equal(capturedPromoteOptions?.safeAddress, '0x3333333333333333333333333333333333333333')
+  assert.equal(capturedPromoteOptions?.ownerPrivateKey, '0x4444444444444444444444444444444444444444444444444444444444444444')
+  assert.equal(capturedPromoteOptions?.rpcUrl, 'https://rpc.mapping.example')
+  assert.equal(capturedPromoteOptions?.safeApiKey, 'mapping-key')
+  assert.equal(capturedPromoteOptions?.network, 'sepolia')
+  assert.equal(capturedPromoteOptions?.dryRun, true)
+  assert.equal(capturedPromoteOptions?.quiet, true)
 })

@@ -14,6 +14,7 @@ import { deployCommand } from './commands/deploy.js'
 import { statusCommand } from './commands/status.js'
 import { initCommand } from './commands/init.js'
 import { setupCommand } from './commands/setup.js'
+import { promoteCommand } from './commands/promote.js'
 import { readFileSync } from 'fs'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
@@ -28,6 +29,7 @@ export interface CliHandlers {
   status: typeof statusCommand
   init: typeof initCommand
   setup: typeof setupCommand
+  promote: typeof promoteCommand
 }
 
 export function createProgram(handlers: CliHandlers = {
@@ -35,6 +37,7 @@ export function createProgram(handlers: CliHandlers = {
   status: statusCommand,
   init: initCommand,
   setup: setupCommand,
+  promote: promoteCommand,
 }): Command {
   const program = new Command()
 
@@ -95,6 +98,25 @@ export function createProgram(handlers: CliHandlers = {
     .option('--debug', 'Debug output')
     .action(async (options) => {
       await handlers.setup(options)
+    })
+
+  // Promote command
+  program
+    .command('promote')
+    .description('Promote immutable version to mutable channel via Safe')
+    .requiredOption('--to <target>', 'Target version label or full domain (e.g. v2 or v2.app.eth)')
+    .option('--channel <channel>', 'Channel label or full domain to update (default: live)', 'live')
+    .option('--ens-domain <domain>', 'ENS parent domain (needed for non-FQDN channel/target)')
+    .option('--safe-address <address>', 'Safe multisig address')
+    .option('--owner-private-key <key>', 'Owner private key for Safe signing')
+    .option('--rpc-url <url>', 'RPC URL')
+    .option('--safe-api-key <key>', 'Safe API key')
+    .option('--network <network>', 'Network (mainnet, sepolia, goerli)', 'sepolia')
+    .option('--dry-run', 'Preview promotion without creating Safe proposal')
+    .option('--quiet', 'Minimal output')
+    .option('--debug', 'Debug output')
+    .action(async (options) => {
+      await handlers.promote(options)
     })
 
   return program

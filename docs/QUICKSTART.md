@@ -52,6 +52,22 @@ npm run cli -- status
 npm run cli -- status --subdomain v0.your-domain.eth
 ```
 
+## Promote A Version To A Stable Channel
+
+Create a Safe proposal to point `live.your-domain.eth` to an immutable version:
+
+```bash
+npm run cli -- promote --to v2 --channel live --ens-domain your-domain.eth
+```
+
+`live.your-domain.eth` must already exist as a wrapped subdomain and be owned by your Safe.
+
+Rollback is the same command, pointing `live` back to an older version:
+
+```bash
+npm run cli -- promote --to v1 --channel live --ens-domain your-domain.eth
+```
+
 ## Auto Deploy Hook (Optional)
 
 ```bash
