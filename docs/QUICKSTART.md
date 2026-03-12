@@ -68,6 +68,20 @@ Rollback is the same command, pointing `live` back to an older version:
 npm run cli -- promote --to v1 --channel live --ens-domain your-domain.eth
 ```
 
+## List Channels
+
+Inspect common mutable channels and what they point to:
+
+```bash
+npm run cli -- channels --ens-domain your-domain.eth
+```
+
+Specify custom channels:
+
+```bash
+npm run cli -- channels --channels live,staging,preview.your-domain.eth --ens-domain your-domain.eth
+```
+
 ## Auto Deploy Hook (Optional)
 
 ```bash

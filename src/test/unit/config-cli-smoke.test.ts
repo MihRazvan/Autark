@@ -123,6 +123,7 @@ test('smoke: CLI deploy flags map to expected option keys', async () => {
     init: async () => {},
     setup: async () => {},
     promote: async () => {},
+    channels: async () => {},
   })
 
   await program.parseAsync(
@@ -174,6 +175,7 @@ test('smoke: CLI promote flags map to expected option keys', async () => {
     promote: async (opts) => {
       capturedPromoteOptions = opts as unknown as Record<string, unknown>
     },
+    channels: async () => {},
   })
 
   await program.parseAsync(
@@ -214,4 +216,46 @@ test('smoke: CLI promote flags map to expected option keys', async () => {
   assert.equal(capturedPromoteOptions?.network, 'sepolia')
   assert.equal(capturedPromoteOptions?.dryRun, true)
   assert.equal(capturedPromoteOptions?.quiet, true)
+})
+
+test('smoke: CLI channels flags map to expected option keys', async () => {
+  let capturedChannelsOptions: Record<string, unknown> | undefined
+
+  const program = createProgram({
+    deploy: async () => {},
+    status: async () => {},
+    init: async () => {},
+    setup: async () => {},
+    promote: async () => {},
+    channels: async (opts) => {
+      capturedChannelsOptions = opts as unknown as Record<string, unknown>
+    },
+  })
+
+  await program.parseAsync(
+    [
+      'node',
+      'autark',
+      'channels',
+      '--channels',
+      'live,staging,preview.mapped.eth',
+      '--ens-domain',
+      'mapped.eth',
+      '--rpc-url',
+      'https://rpc.mapping.example',
+      '--network',
+      'sepolia',
+      '--no-resolve-versions',
+      '--quiet',
+    ],
+    { from: 'node' }
+  )
+
+  assert.ok(capturedChannelsOptions)
+  assert.equal(capturedChannelsOptions?.channels, 'live,staging,preview.mapped.eth')
+  assert.equal(capturedChannelsOptions?.ensDomain, 'mapped.eth')
+  assert.equal(capturedChannelsOptions?.rpcUrl, 'https://rpc.mapping.example')
+  assert.equal(capturedChannelsOptions?.network, 'sepolia')
+  assert.equal(capturedChannelsOptions?.resolveVersions, false)
+  assert.equal(capturedChannelsOptions?.quiet, true)
 })

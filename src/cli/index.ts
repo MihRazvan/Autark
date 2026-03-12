@@ -15,6 +15,7 @@ import { statusCommand } from './commands/status.js'
 import { initCommand } from './commands/init.js'
 import { setupCommand } from './commands/setup.js'
 import { promoteCommand } from './commands/promote.js'
+import { channelsCommand } from './commands/channels.js'
 import { readFileSync } from 'fs'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
@@ -30,6 +31,7 @@ export interface CliHandlers {
   init: typeof initCommand
   setup: typeof setupCommand
   promote: typeof promoteCommand
+  channels: typeof channelsCommand
 }
 
 export function createProgram(handlers: CliHandlers = {
@@ -38,6 +40,7 @@ export function createProgram(handlers: CliHandlers = {
   init: initCommand,
   setup: setupCommand,
   promote: promoteCommand,
+  channels: channelsCommand,
 }): Command {
   const program = new Command()
 
@@ -117,6 +120,21 @@ export function createProgram(handlers: CliHandlers = {
     .option('--debug', 'Debug output')
     .action(async (options) => {
       await handlers.promote(options)
+    })
+
+  // Channels command
+  program
+    .command('channels')
+    .description('List mutable channel subdomains and their current targets')
+    .option('--channels <list>', 'Comma-separated channel labels/domains (default: live,staging,canary)')
+    .option('--ens-domain <domain>', 'ENS parent domain')
+    .option('--rpc-url <url>', 'RPC URL')
+    .option('--network <network>', 'Network (mainnet, sepolia, goerli)', 'sepolia')
+    .option('--no-resolve-versions', 'Skip mapping channel contenthash to vN domains')
+    .option('--quiet', 'Minimal output')
+    .option('--debug', 'Debug output')
+    .action(async (options) => {
+      await handlers.channels(options)
     })
 
   return program
