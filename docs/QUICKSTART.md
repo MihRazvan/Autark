@@ -82,6 +82,15 @@ Specify custom channels:
 npm run cli -- channels --channels live,staging,preview.your-domain.eth --ens-domain your-domain.eth
 ```
 
+Create missing channels as Safe proposals:
+
+```bash
+npm run cli -- channels --create live,staging --ens-domain your-domain.eth --dry-run
+npm run cli -- channels --create live,staging --ens-domain your-domain.eth
+```
+
+`--create` supports only direct child labels under your parent domain.
+
 ## Auto Deploy Hook (Optional)
 
 ```bash

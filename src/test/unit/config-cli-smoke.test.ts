@@ -239,13 +239,22 @@ test('smoke: CLI channels flags map to expected option keys', async () => {
       'channels',
       '--channels',
       'live,staging,preview.mapped.eth',
+      '--create',
+      'live,staging',
       '--ens-domain',
       'mapped.eth',
+      '--safe-address',
+      '0x3333333333333333333333333333333333333333',
+      '--owner-private-key',
+      '0x4444444444444444444444444444444444444444444444444444444444444444',
+      '--safe-api-key',
+      'mapping-key',
       '--rpc-url',
       'https://rpc.mapping.example',
       '--network',
       'sepolia',
       '--no-resolve-versions',
+      '--dry-run',
       '--quiet',
     ],
     { from: 'node' }
@@ -253,9 +262,14 @@ test('smoke: CLI channels flags map to expected option keys', async () => {
 
   assert.ok(capturedChannelsOptions)
   assert.equal(capturedChannelsOptions?.channels, 'live,staging,preview.mapped.eth')
+  assert.equal(capturedChannelsOptions?.create, 'live,staging')
   assert.equal(capturedChannelsOptions?.ensDomain, 'mapped.eth')
+  assert.equal(capturedChannelsOptions?.safeAddress, '0x3333333333333333333333333333333333333333')
+  assert.equal(capturedChannelsOptions?.ownerPrivateKey, '0x4444444444444444444444444444444444444444444444444444444444444444')
+  assert.equal(capturedChannelsOptions?.safeApiKey, 'mapping-key')
   assert.equal(capturedChannelsOptions?.rpcUrl, 'https://rpc.mapping.example')
   assert.equal(capturedChannelsOptions?.network, 'sepolia')
   assert.equal(capturedChannelsOptions?.resolveVersions, false)
+  assert.equal(capturedChannelsOptions?.dryRun, true)
   assert.equal(capturedChannelsOptions?.quiet, true)
 })
