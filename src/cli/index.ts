@@ -122,6 +122,25 @@ export function createProgram(handlers: CliHandlers = {
       await handlers.promote(options)
     })
 
+  // Rollback command (alias for promote)
+  program
+    .command('rollback')
+    .description('Rollback a mutable channel to a previous immutable version (alias for promote)')
+    .requiredOption('--to <target>', 'Target version label or full domain (e.g. v1 or v1.app.eth)')
+    .option('--channel <channel>', 'Channel label or full domain to update (default: live)', 'live')
+    .option('--ens-domain <domain>', 'ENS parent domain (needed for non-FQDN channel/target)')
+    .option('--safe-address <address>', 'Safe multisig address')
+    .option('--owner-private-key <key>', 'Owner private key for Safe signing')
+    .option('--rpc-url <url>', 'RPC URL')
+    .option('--safe-api-key <key>', 'Safe API key')
+    .option('--network <network>', 'Network (mainnet, sepolia, goerli)', 'sepolia')
+    .option('--dry-run', 'Preview rollback without creating Safe proposal')
+    .option('--quiet', 'Minimal output')
+    .option('--debug', 'Debug output')
+    .action(async (options) => {
+      await handlers.promote(options)
+    })
+
   // Channels command
   program
     .command('channels')

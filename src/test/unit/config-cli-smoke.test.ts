@@ -218,6 +218,60 @@ test('smoke: CLI promote flags map to expected option keys', async () => {
   assert.equal(capturedPromoteOptions?.quiet, true)
 })
 
+test('smoke: CLI rollback maps to promote handler option keys', async () => {
+  let capturedPromoteOptions: Record<string, unknown> | undefined
+
+  const program = createProgram({
+    deploy: async () => {},
+    status: async () => {},
+    init: async () => {},
+    setup: async () => {},
+    promote: async (opts) => {
+      capturedPromoteOptions = opts as unknown as Record<string, unknown>
+    },
+    channels: async () => {},
+  })
+
+  await program.parseAsync(
+    [
+      'node',
+      'autark',
+      'rollback',
+      '--to',
+      'v1',
+      '--channel',
+      'live',
+      '--ens-domain',
+      'mapped.eth',
+      '--safe-address',
+      '0x3333333333333333333333333333333333333333',
+      '--owner-private-key',
+      '0x4444444444444444444444444444444444444444444444444444444444444444',
+      '--rpc-url',
+      'https://rpc.mapping.example',
+      '--safe-api-key',
+      'mapping-key',
+      '--network',
+      'sepolia',
+      '--dry-run',
+      '--quiet',
+    ],
+    { from: 'node' }
+  )
+
+  assert.ok(capturedPromoteOptions)
+  assert.equal(capturedPromoteOptions?.to, 'v1')
+  assert.equal(capturedPromoteOptions?.channel, 'live')
+  assert.equal(capturedPromoteOptions?.ensDomain, 'mapped.eth')
+  assert.equal(capturedPromoteOptions?.safeAddress, '0x3333333333333333333333333333333333333333')
+  assert.equal(capturedPromoteOptions?.ownerPrivateKey, '0x4444444444444444444444444444444444444444444444444444444444444444')
+  assert.equal(capturedPromoteOptions?.rpcUrl, 'https://rpc.mapping.example')
+  assert.equal(capturedPromoteOptions?.safeApiKey, 'mapping-key')
+  assert.equal(capturedPromoteOptions?.network, 'sepolia')
+  assert.equal(capturedPromoteOptions?.dryRun, true)
+  assert.equal(capturedPromoteOptions?.quiet, true)
+})
+
 test('smoke: CLI channels flags map to expected option keys', async () => {
   let capturedChannelsOptions: Record<string, unknown> | undefined
 
