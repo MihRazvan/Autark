@@ -9,7 +9,7 @@ import { config } from 'dotenv'
 import { Command } from 'commander'
 
 // Load .env file
-config()
+config({ quiet: true })
 import { deployCommand } from './commands/deploy.js'
 import { statusCommand } from './commands/status.js'
 import { initCommand } from './commands/init.js'
