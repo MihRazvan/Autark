@@ -35,5 +35,5 @@ Prevent single-actor frontend takeover by requiring Safe multisig approval befor
 
 ## Notes
 
-- The current repo also contains legacy experimental scripts under `src/test`, `src/core`, and `src/providers`.
+- The current repo also contains legacy experimental scripts under `src/test` and `src/core`.
 - Long-form architecture and hackathon docs are archived in `docs/_legacy/`.
