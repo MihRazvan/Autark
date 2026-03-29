@@ -3,7 +3,7 @@
 ## Prerequisites
 
 - Node.js `>= 20.10.0`
-- Storacha CLI installed and authenticated
+- Storacha CLI installed, authenticated, and pointed at an active space
 - Wrapped ENS parent domain on the target network
 - Safe multisig configured
 
@@ -12,6 +12,14 @@
 ```bash
 npm install
 npm run build
+```
+
+Storacha CLI should be ready before deploy:
+
+```bash
+storacha login <your-email>
+storacha space ls
+storacha space use <did>
 ```
 
 ## Configure

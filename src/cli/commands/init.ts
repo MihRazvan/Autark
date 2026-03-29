@@ -32,7 +32,9 @@ safeApiKey: your-safe-api-key
 # Owner/Signer Configuration (for Safe operations)
 ownerPrivateKey: 0x...
 
-# Storacha Configuration (optional, uses CLI by default)
+# Storacha Configuration
+# Current deploy flow uses your local Storacha CLI login + selected space.
+# The fields below are reserved for a future native Storacha integration.
 # storachaKey: ...
 # storachaProof: ...
 
