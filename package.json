@@ -1,10 +1,10 @@
 {
   "name": "autark",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Decentralized frontend deployment with Safe multisig governance and immutable ENS versioning",
   "type": "module",
   "bin": {
-    "autark": "./dist/cli/index.js"
+    "autark": "dist/cli/index.js"
   },
   "scripts": {
     "build": "rm -rf dist && tsc && chmod +x ./dist/cli/index.js",
@@ -43,7 +43,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MihRazvan/Autark.git"
+    "url": "git+https://github.com/MihRazvan/Autark.git"
   },
   "bugs": {
     "url": "https://github.com/MihRazvan/Autark/issues"
@@ -61,6 +61,7 @@
   "dependencies": {
     "@safe-global/api-kit": "^4.0.0",
     "@safe-global/protocol-kit": "^6.1.1",
+    "autark": "^0.1.1",
     "chalk": "^5.6.2",
     "commander": "^11.1.0",
     "cosmiconfig": "^9.0.0",

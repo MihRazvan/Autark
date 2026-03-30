@@ -16,7 +16,7 @@ import { initCommand } from './commands/init.js'
 import { setupCommand } from './commands/setup.js'
 import { promoteCommand } from './commands/promote.js'
 import { channelsCommand } from './commands/channels.js'
-import { readFileSync } from 'fs'
+import { readFileSync, realpathSync } from 'fs'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 
@@ -164,6 +164,6 @@ export function createProgram(handlers: CliHandlers = {
   return program
 }
 
-if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (process.argv[1] && realpathSync(resolve(process.argv[1])) === fileURLToPath(import.meta.url)) {
   createProgram().parse()
 }
