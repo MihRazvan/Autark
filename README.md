@@ -1,10 +1,11 @@
 # AUTARK
+<img width="1920" height="360" alt="Autark hero" src="https://github.com/user-attachments/assets/f0cc3bed-8418-47c3-b59f-f311ea959580" />
 
 Autark is a DevSecOps framework for more secure, self-sovereign frontend deployments, combining Safe multisig governance, ENS versioning, and IPFS storage into a verifiable release flow.
 
 **Project Summary:** [SUMMARY.md](./SUMMARY.md)
 
-[Demo](https://youtu.be/Xw10ulcNK7M) | [Quickstart](./docs/QUICKSTART.md) | [User Flow](./docs/USER-FLOW.md) | [Git Hooks](./docs/GIT-HOOKS.md) | [Technical Architecture](./docs/TECHNICAL-ARCHITECTURE.md) | [Architecture (Short)](./docs/ARCHITECTURE-SHORT.md) | [Docs Index](./docs/README.md) | [Safe DAO Proposal](https://forum.safe.global/t/grant-proposal-supporting-autark-a-secure-self-sovereign-frontend-deployment-framework-built-on-safe/6799)
+[Demo](https://youtu.be/Xw10ulcNK7M) | [Quickstart](./docs/QUICKSTART.md) | [User Flow](./docs/USER-FLOW.md) | [Git Hooks](./docs/GIT-HOOKS.md) | [Technical Architecture](./docs/TECHNICAL-ARCHITECTURE.md) | [Architecture (Short)](./docs/ARCHITECTURE-SHORT.md) | [Docs Index](./docs/README.md)
 
 ---
 
@@ -13,6 +14,8 @@ Autark is a DevSecOps framework for more secure, self-sovereign frontend deploym
 Modern deployment pipelines are fast, centralized, and often trusted too blindly.
 
 A single compromised developer machine, CI token, or deployment credential can push malicious frontend code to production in minutes. For onchain applications, that means the frontend becomes the weakest link, even when the smart contracts are sound.
+
+<img width="1679" height="584" alt="Autark problem diagram" src="https://github.com/user-attachments/assets/eaa5cbef-2670-4834-9e93-618d539868c0" />
 
 Autark exists to slow that attack path down and make every release auditable.
 
@@ -52,6 +55,8 @@ A release is built, uploaded to IPFS, mapped to a versioned ENS subdomain, and g
 
 Autark replaces implicit trust with a verifiable release flow:
 
+<img width="1522" height="595" alt="Autark release flow" src="https://github.com/user-attachments/assets/1a392867-b64e-4e12-a3b5-78fd9ee26788" />
+
 1. Build static frontend output
 2. Upload the build to IPFS via Storacha
 3. Detect the next versioned ENS subdomain
@@ -84,7 +89,7 @@ For the full setup path, including Storacha auth, ENS configuration, channels, a
 
 ## Documentation
 
-Autark now ships with an active docs set on `genesis`:
+Autark now ships with an active docs set on `main`:
 
 - [Quickstart](./docs/QUICKSTART.md)
 - [User Flow](./docs/USER-FLOW.md)
@@ -131,7 +136,7 @@ This hackathon pass updated the original project into the current `0.1.2` implem
 ### Demo and documentation updates
 
 - updated the example site for the PL Genesis demo flow
-- restored active docs for user flow, git hooks, and technical architecture on the `genesis` branch
+- restored active docs for user flow, git hooks, and technical architecture on the main branch
 - removed old hackathon submission references from the main project entry points
 
 Autark is now published at version `0.1.2`.
