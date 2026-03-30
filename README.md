@@ -4,7 +4,7 @@ Autark is a DevSecOps framework for more secure, self-sovereign frontend deploym
 
 **Project Summary:** [SUMMARY.md](./SUMMARY.md)
 
-[Demo](https://www.youtube.com/watch?v=-pGsHpUI0J0) | [Quickstart](./docs/QUICKSTART.md) | [User Flow](./docs/USER-FLOW.md) | [Git Hooks](./docs/GIT-HOOKS.md) | [Technical Architecture](./docs/TECHNICAL-ARCHITECTURE.md) | [Architecture (Short)](./docs/ARCHITECTURE-SHORT.md) | [Docs Index](./docs/README.md) | [Safe DAO Proposal](https://forum.safe.global/t/grant-proposal-supporting-autark-a-secure-self-sovereign-frontend-deployment-framework-built-on-safe/6799)
+[Demo](https://youtu.be/Xw10ulcNK7M) | [Quickstart](./docs/QUICKSTART.md) | [User Flow](./docs/USER-FLOW.md) | [Git Hooks](./docs/GIT-HOOKS.md) | [Technical Architecture](./docs/TECHNICAL-ARCHITECTURE.md) | [Architecture (Short)](./docs/ARCHITECTURE-SHORT.md) | [Docs Index](./docs/README.md) | [Safe DAO Proposal](https://forum.safe.global/t/grant-proposal-supporting-autark-a-secure-self-sovereign-frontend-deployment-framework-built-on-safe/6799)
 
 ---
 
@@ -138,4 +138,4 @@ Autark is now published at version `0.1.2`.
 
 ---
 
-Built for the PL Genesis hackathon and continued here as an actively iterated solo project.
+Built for the PL Genesis hackathon.
