@@ -1,6 +1,6 @@
 {
   "name": "autark",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Decentralized frontend deployment with Safe multisig governance and immutable ENS versioning",
   "type": "module",
   "bin": {
