@@ -45,12 +45,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MihRazvan/ETHRome_hackathon.git"
+    "url": "https://github.com/MihRazvan/Autark.git"
   },
   "bugs": {
-    "url": "https://github.com/MihRazvan/ETHRome_hackathon/issues"
+    "url": "https://github.com/MihRazvan/Autark/issues"
   },
-  "homepage": "https://github.com/MihRazvan/ETHRome_hackathon#readme",
+  "homepage": "https://github.com/MihRazvan/Autark#readme",
   "files": [
     "dist",
     "README.md",

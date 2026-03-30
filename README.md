@@ -3,7 +3,7 @@
 
 Autark is a crypto-anarchic `DevSecOps` framework for more secure, and self-sovereign frontend deployments; embracing immutable, decentralized, and multi-party-verified frontend governance through Safe + ENS + IPFS.
 
-[Demo](https://www.youtube.com/watch?v=-pGsHpUI0J0) | [Quickstart](https://github.com/MihRazvan/ETHRome_hackathon/blob/main/docs/QUICKSTART.md) | [Architecture (Short)](https://github.com/MihRazvan/ETHRome_hackathon/blob/main/docs/ARCHITECTURE-SHORT.md) | [Docs Index](https://github.com/MihRazvan/ETHRome_hackathon/blob/main/docs/README.md) | [Submission](https://taikai.network/ethrome/hackathons/2025/projects/cmgx4r1we02d112kkxt8y1sxi/idea) | [Safe DAO Proposal](https://forum.safe.global/t/grant-proposal-supporting-autark-a-secure-self-sovereign-frontend-deployment-framework-built-on-safe/6799)
+[Demo](https://www.youtube.com/watch?v=-pGsHpUI0J0) | [Quickstart](https://github.com/MihRazvan/Autark/blob/main/docs/QUICKSTART.md) | [Architecture (Short)](https://github.com/MihRazvan/Autark/blob/main/docs/ARCHITECTURE-SHORT.md) | [Docs Index](https://github.com/MihRazvan/Autark/blob/main/docs/README.md) | [Submission](https://taikai.network/ethrome/hackathons/2025/projects/cmgx4r1we02d112kkxt8y1sxi/idea) | [Safe DAO Proposal](https://forum.safe.global/t/grant-proposal-supporting-autark-a-secure-self-sovereign-frontend-deployment-framework-built-on-safe/6799)
 
 ---
 
@@ -52,7 +52,7 @@ Autark replaces “trust” with verifiable processes and cryptographic finality
 
 > Each release becomes an immutable record, and an auditable artifact of a more secure frontend versioning deployment.
 
-Explore: concise [Architecture (Short)](https://github.com/MihRazvan/ETHRome_hackathon/blob/main/docs/ARCHITECTURE-SHORT.md) and [legacy docs archive](https://github.com/MihRazvan/ETHRome_hackathon/tree/main/docs/_legacy).
+Explore: concise [Architecture (Short)](https://github.com/MihRazvan/Autark/blob/main/docs/ARCHITECTURE-SHORT.md) and [legacy docs archive](https://github.com/MihRazvan/Autark/tree/main/docs/_legacy).
 
 ---
 
@@ -64,7 +64,7 @@ autark init
 autark deploy dist
 ```
 
-Explore: concise [Quickstart](https://github.com/MihRazvan/ETHRome_hackathon/blob/main/docs/QUICKSTART.md).
+Explore: concise [Quickstart](https://github.com/MihRazvan/Autark/blob/main/docs/QUICKSTART.md).
 
 ---
 
