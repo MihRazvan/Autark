@@ -89,22 +89,15 @@ export async function deployCommand(options: DeployOptions): Promise<void> {
     logger.log(`  URL: ${ipfsResult.url}`)
     logger.newline()
 
-    // Step 4: Initialize clients
-    logger.section('🔌 Step 4: Initialize Clients')
+    // Step 4: Initialize public client
+    logger.section('🔌 Step 4: Initialize Public Client')
     const chain = config.network === 'mainnet' ? mainnet : sepolia
     const publicClient = createPublicClient({
       chain,
       transport: http(config.rpcUrl),
     })
     logger.success('Public client initialized')
-
-    const safeClient = await initSafeClient({
-      safeAddress: config.safeAddress!,
-      signerPrivateKey: config.ownerPrivateKey!,
-      rpcUrl: config.rpcUrl!,
-      apiKey: config.safeApiKey,
-    })
-    logger.success('Safe client initialized')
+    logger.log('Safe client will be initialized only if required by deployment mode')
     logger.newline()
 
     // Step 5: Detect next version
@@ -296,7 +289,11 @@ export async function deployCommand(options: DeployOptions): Promise<void> {
         chain.id,
         batchResult,
         config.ownerPrivateKey!,
-        logger
+        logger,
+        {
+          rpcUrl: config.rpcUrl,
+          safeApiKey: config.safeApiKey,
+        }
       )
 
       spinner.succeed('Batch transaction submitted to Safe')
@@ -356,6 +353,12 @@ export async function deployCommand(options: DeployOptions): Promise<void> {
 
       // Transaction 2: Set contenthash (via Safe)
       logger.log('Next step: Set contenthash via Safe')
+      const safeClient = await initSafeClient({
+        safeAddress: config.safeAddress!,
+        signerPrivateKey: config.ownerPrivateKey!,
+        rpcUrl: config.rpcUrl!,
+        apiKey: config.safeApiKey,
+      })
       const spinner2 = logger.spinner('Proposing contenthash to Safe...')
       spinner2.start()
       const result2 = await sendSafeTransaction(safeClient, plan.setContenthashTx)

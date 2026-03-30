@@ -2,7 +2,7 @@
  * Safe multisig client wrapper
  */
 
-import { createSafeClient } from '@safe-global/sdk-starter-kit'
+import { Wallet } from 'ethers'
 import type { Address, Hex } from 'viem'
 import { SafeError } from '../errors.js'
 
@@ -25,10 +25,18 @@ export interface SafeTransactionResult {
   success: boolean
 }
 
+export interface SafeClientInstance {
+  protocolKit: any
+  apiKit: any
+  safeAddress: Address
+  signerAddress: Address
+  threshold: number
+}
+
 /**
  * Create and initialize Safe client
  */
-export async function initSafeClient(config: SafeClientConfig) {
+export async function initSafeClient(config: SafeClientConfig): Promise<SafeClientInstance> {
   if (!config.apiKey) {
     throw new SafeError(
       'Safe API key is required. Get one at: https://developer.safe.global'
@@ -36,37 +44,70 @@ export async function initSafeClient(config: SafeClientConfig) {
   }
 
   try {
-    const client = await createSafeClient({
+    const { default: Safe } = await import('@safe-global/protocol-kit')
+    const { default: SafeApiKit } = await import('@safe-global/api-kit')
+
+    const protocolKit = await Safe.init({
       provider: config.rpcUrl,
       signer: config.signerPrivateKey,
       safeAddress: config.safeAddress,
-      apiKey: config.apiKey,
     })
 
-    return client
+    const apiKit = new SafeApiKit({
+      apiKey: config.apiKey,
+      chainId: await protocolKit.getChainId(),
+    })
+
+    return {
+      protocolKit,
+      apiKit,
+      safeAddress: config.safeAddress,
+      signerAddress: new Wallet(config.signerPrivateKey).address as Address,
+      threshold: await protocolKit.getThreshold(),
+    }
   } catch (error: any) {
     throw new SafeError(`Failed to initialize Safe client: ${error.message}`)
   }
 }
 
 /**
- * Send transaction through Safe
- * For threshold=1, this will execute immediately
- * For threshold>1, this will propose and require approvals in UI
+ * Send transaction through Safe.
+ * For threshold=1, this executes immediately.
+ * For threshold>1, this creates a proposal in the Safe Transaction Service.
  */
 export async function sendSafeTransaction(
-  client: any,
+  client: SafeClientInstance,
   transaction: SafeTransaction
 ): Promise<SafeTransactionResult> {
   try {
-    // Use send() which handles both immediate execution (threshold=1)
-    // and creating proposals (threshold>1)
-    const result = await client.send({
+    const safeTransaction = await client.protocolKit.createTransaction({
       transactions: [transaction],
     })
 
+    const safeTxHash = await client.protocolKit.getTransactionHash(safeTransaction)
+
+    if (client.threshold <= 1) {
+      const signedTransaction = await client.protocolKit.signTransaction(safeTransaction)
+      await client.protocolKit.executeTransaction(signedTransaction)
+
+      return {
+        safeTxHash,
+        success: true,
+      }
+    }
+
+    const signature = await client.protocolKit.signHash(safeTxHash)
+
+    await client.apiKit.proposeTransaction({
+      safeAddress: client.safeAddress,
+      safeTransactionData: safeTransaction.data,
+      safeTxHash,
+      senderAddress: client.signerAddress,
+      senderSignature: signature.data,
+    })
+
     return {
-      safeTxHash: result?.transactions?.safeTxHash || result?.safeTxHash,
+      safeTxHash,
       success: true,
     }
   } catch (error: any) {

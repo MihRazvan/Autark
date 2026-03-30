@@ -429,14 +429,14 @@ https://ethereum-sepolia-rpc.publicnode.com
 
 **Result:**
 
-Creates `.autarkrc.json`:
-```json
-{
-  "ensDomain": "myproject.eth",
-  "safeAddress": "0xA5ED8dd265c8e9154FaBf8E66Cb3aF16002261A3",
-  "network": "sepolia",
-  "rpcUrl": "https://sepolia.infura.io/v3/abc123..."
-}
+Creates `secure-deploy.config.yaml`:
+```yaml
+network: sepolia
+rpcUrl: https://sepolia.infura.io/v3/abc123...
+ensDomain: myproject.eth
+safeAddress: 0xA5ED8dd265c8e9154FaBf8E66Cb3aF16002261A3
+safeApiKey: sk_live_abc123def456...
+ownerPrivateKey: 0xabc123def456...
 ```
 
 ### Step 3: Create .env File
@@ -456,10 +456,10 @@ SAFE_ADDRESS=0xA5ED8dd265c8e9154FaBf8E66Cb3aF16002261A3
 SAFE_API_KEY=sk_live_abc123def456...
 
 # ENS domain
-ENS_DOMAIN=myproject.eth
+SEPOLIA_ENS_DOMAIN=myproject.eth
 
 # Private key (one of the Safe signers)
-OWNER_PRIVATE_KEY=0xabc123def456...
+SEPOLIA_OWNER_PK=0xabc123def456...
 ```
 
 **Getting your private key:**
@@ -479,7 +479,7 @@ OWNER_PRIVATE_KEY=0xabc123def456...
 
 ```bash
 echo ".env" >> .gitignore
-echo ".autarkrc.json" >> .gitignore
+echo "secure-deploy.config.yaml" >> .gitignore
 ```
 
 **Verify:**
@@ -1168,8 +1168,8 @@ jobs:
         env:
           SEPOLIA_RPC_URL: ${{ secrets.SEPOLIA_RPC_URL }}
           SAFE_ADDRESS: ${{ secrets.SAFE_ADDRESS }}
-          ENS_DOMAIN: ${{ secrets.ENS_DOMAIN }}
-          OWNER_PRIVATE_KEY: ${{ secrets.OWNER_PRIVATE_KEY }}
+          SEPOLIA_ENS_DOMAIN: ${{ secrets.SEPOLIA_ENS_DOMAIN }}
+          SEPOLIA_OWNER_PK: ${{ secrets.SEPOLIA_OWNER_PK }}
           SAFE_API_KEY: ${{ secrets.SAFE_API_KEY }}
 ```
 
@@ -1205,8 +1205,8 @@ cat delegation.b64
 |------|-------|---------|
 | `SEPOLIA_RPC_URL` | Your RPC endpoint | `https://sepolia.infura.io/v3/abc123...` |
 | `SAFE_ADDRESS` | Your Safe address | `0xA5ED8dd265c8e9154FaBf8E66Cb3aF16002261A3` |
-| `ENS_DOMAIN` | Your ENS domain | `myproject.eth` |
-| `OWNER_PRIVATE_KEY` | Private key of Safe signer | `0xabc123...` |
+| `SEPOLIA_ENS_DOMAIN` | Your ENS domain | `myproject.eth` |
+| `SEPOLIA_OWNER_PK` | Private key of Safe signer | `0xabc123...` |
 | `SAFE_API_KEY` | Safe API key | `sk_live_abc123...` |
 | `STORACHA_DELEGATION` | Base64 encoded delegation | (paste contents of delegation.b64) |
 
@@ -1522,7 +1522,7 @@ cat .env | grep SAFE_ADDRESS
 **2. Wrong network**
 ```bash
 # Verify network
-cat .autarkrc.json
+cat secure-deploy.config.yaml
 # Should match network in Safe UI (top right)
 ```
 
@@ -1567,12 +1567,12 @@ Error: Invalid private key
 **Solution:**
 ```bash
 # Ensure private key has 0x prefix
-OWNER_PRIVATE_KEY=0xabc123...  # ✓ Correct
-OWNER_PRIVATE_KEY=abc123...    # ✗ Wrong
+SEPOLIA_OWNER_PK=0xabc123...  # ✓ Correct
+SEPOLIA_OWNER_PK=abc123...    # ✗ Wrong
 
 # Ensure no quotes in .env
-OWNER_PRIVATE_KEY=0xabc123...  # ✓ Correct
-OWNER_PRIVATE_KEY="0xabc..."   # ✗ Wrong (in .env files)
+SEPOLIA_OWNER_PK=0xabc123...  # ✓ Correct
+SEPOLIA_OWNER_PK="0xabc..."   # ✗ Wrong (in .env files)
 ```
 
 ### Issue: "Git hook not triggering"

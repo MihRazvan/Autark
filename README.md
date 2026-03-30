@@ -1,85 +1,141 @@
 # AUTARK
-<img width="1920" height="360" alt="ETHRome25banner" src="https://github.com/user-attachments/assets/f0cc3bed-8418-47c3-b59f-f311ea959580" />
 
-Autark is a crypto-anarchic `DevSecOps` framework for more secure, and self-sovereign frontend deployments; embracing immutable, decentralized, and multi-party-verified frontend governance through Safe + ENS + IPFS.
+Autark is a DevSecOps framework for more secure, self-sovereign frontend deployments, combining Safe multisig governance, ENS versioning, and IPFS storage into a verifiable release flow.
 
-[Demo](https://www.youtube.com/watch?v=-pGsHpUI0J0) | [User Guide](https://github.com/MihRazvan/ETHRome_hackathon/blob/main/docs/USER-GUIDE.md) | [Technical Architecture](https://github.com/MihRazvan/ETHRome_hackathon/blob/main/docs/TECHNICAL-ARCHITECTURE.md) | [Flow Chart](https://github.com/MihRazvan/ETHRome_hackathon/blob/main/docs/FLOW-CHART.md) | [Submission](https://taikai.network/ethrome/hackathons/2025/projects/cmgx4r1we02d112kkxt8y1sxi/idea) | [Safe DAO Proposal](https://forum.safe.global/t/grant-proposal-supporting-autark-a-secure-self-sovereign-frontend-deployment-framework-built-on-safe/6799)
+**Project Summary:** [SUMMARY.md](./SUMMARY.md)
 
----
-
-# Problem First!
-
-Modern `DevOps` pipelines have become too automated, too centralized, and too trusting.
-
-A single compromised developer or **CI/CD** token can silently push malicious frontend code to production — within minutes — across millions of users. Here, the weakest link remains the deployment pipeline.
-
-<img width="1679" height="584" alt="Frame 4 (2)" src="https://github.com/user-attachments/assets/eaa5cbef-2670-4834-9e93-618d539868c0" />
-
-**AUTARK** exists to contribute to fixing this.
-
-It reintroduces multi-party verification, cryptographic immutability, and decentralized governance into the deployment lifecycle. We are turning `DevOps` into `DevSecOps`, and `DevSecOps` into a **meta-governance layer for frontends**.
-
-> **AUTARK** enforces a new rule where nothing goes live without consensus, and once live, new (as well as previous) version lives forever.
+[Demo](https://www.youtube.com/watch?v=-pGsHpUI0J0) | [Quickstart](./docs/QUICKSTART.md) | [User Flow](./docs/USER-FLOW.md) | [Git Hooks](./docs/GIT-HOOKS.md) | [Technical Architecture](./docs/TECHNICAL-ARCHITECTURE.md) | [Architecture (Short)](./docs/ARCHITECTURE-SHORT.md) | [Docs Index](./docs/README.md) | [Safe DAO Proposal](https://forum.safe.global/t/grant-proposal-supporting-autark-a-secure-self-sovereign-frontend-deployment-framework-built-on-safe/6799)
 
 ---
 
-# Overview
+## Problem First
 
-Autark [/ô′tär″k/] derived from [autarky](https://en.wikipedia.org/wiki/Autarky), meaning self-sufficiency; is a crypto-anarchic  framework for frontend deployments.
+Modern deployment pipelines are fast, centralized, and often trusted too blindly.
 
-It transforms how teams ship code by introducing a meta-governance layer for frontends. A trustless, multi-sig process that enforces security at the developer layer while preserving decentralization.
+A single compromised developer machine, CI token, or deployment credential can push malicious frontend code to production in minutes. For onchain applications, that means the frontend becomes the weakest link, even when the smart contracts are sound.
 
-## Core Principles
+Autark exists to slow that attack path down and make every release auditable.
 
-1. **ENFORCE BETTER**
-*Every deployment passes through explicit multi-party verification, and immutable cryptographic sealing.*
+It introduces:
 
-2. **REJECT CENTRALIZED GATEKEEPERS**
-*No single-point of failure, no opaque CI/CD pipelines.*
+- multi-party approval before a deployment goes live
+- immutable, versioned ENS releases instead of mutable overwrite-in-place deploys
+- content-addressed IPFS storage that can be independently verified
 
-3. **META-GOVERNANCE LAYER FOR FRONTENDS**
-*A decentralized review `dev` board encoded through Safe multisig decides what becomes production.*
-
-4. **CRUCIAL PART OF THE  PIPELINE**
-*Autark integrates directly into **GitHub Actions**, enforcing multi-sig approval checkpoints before any code can go live.*
+> Nothing goes live without consensus, and every approved version remains available as an immutable artifact.
 
 ---
 
-# How it Works?
+## Overview
 
-Autark replaces “trust” with verifiable processes and cryptographic finality:
-<img width="1522" height="595" alt="Frame 5" src="https://github.com/user-attachments/assets/1a392867-b64e-4e12-a3b5-78fd9ee26788" />
+Autark adds a governance layer to frontend deployment.
 
-> Each release becomes an immutable record, and an auditable artifact of a more secure frontend versioning deployment.
+A release is built, uploaded to IPFS, mapped to a versioned ENS subdomain, and gated by Safe multisig approval before execution. In the recommended mode, subdomain creation and contenthash assignment are bundled into a single Safe transaction so the release is atomic.
 
-Explore: detailed [Technical Architecture](https://github.com/MihRazvan/ETHRome_hackathon/blob/main/docs/TECHNICAL-ARCHITECTURE.md) and extended [Flow Chart](https://github.com/MihRazvan/ETHRome_hackathon/blob/main/docs/FLOW-CHART.md).
+### Core Principles
+
+1. **Enforce Better**  
+   Every deployment passes through explicit review and cryptographic sealing.
+
+2. **Reject Single Points of Failure**  
+   No single developer, machine, or CI token should be able to ship production frontend code alone.
+
+3. **Version, Don’t Overwrite**  
+   Each release becomes a permanent `vN.parent.eth` record instead of mutating one live address invisibly.
+
+4. **Keep Governance Close to the App**  
+   Frontend deployment is part of application security, not a separate convenience layer.
 
 ---
 
-# Quickstart
+## How It Works
 
-``` console
+Autark replaces implicit trust with a verifiable release flow:
+
+1. Build static frontend output
+2. Upload the build to IPFS via Storacha
+3. Detect the next versioned ENS subdomain
+4. Create a Safe proposal
+5. Review and approve with threshold signers
+6. Execute the transaction and publish the immutable release
+
+In the Safe-owned-parent mode, Autark batches:
+
+- `setSubnodeRecord` on ENS NameWrapper
+- `setContenthash` on the Public Resolver
+
+That means the version is created and pointed to the IPFS CID atomically.
+
+Explore the detailed flow in [User Flow](./docs/USER-FLOW.md) and the system design in [Technical Architecture](./docs/TECHNICAL-ARCHITECTURE.md).
+
+---
+
+## Quickstart
+
+```bash
 npm install -g autark
 autark init
 autark deploy dist
 ```
 
-Explore: detailed [User Guide](https://github.com/MihRazvan/ETHRome_hackathon/blob/main/docs/USER-GUIDE.md).
+For the full setup path, including Storacha auth, ENS configuration, channels, and auto-deploy hooks, see [Quickstart](./docs/QUICKSTART.md).
 
 ---
 
-# Tech Stack
+## Documentation
 
-| Component    | Technology                     | Purpose                                |
-| ------------ | ------------------------------ | -------------------------------------- |
-| Governance   | **Safe Multisig**              | Threshold approval and meta-governance |
-| Immutability | **ENS NameWrapper**            | Fuse-burned version locking            |
-| Storage      | **IPFS + Storacha**            | Verifiable decentralized hosting       |
-| Automation   | **Git Hooks + GitHub Actions** | DevSecOps enforcement layer            |
-| Language     | **Node.js / TypeScript**       | CLI and automation scripting           |
+Autark now ships with an active docs set on `genesis`:
 
-> [Autarky](https://en.wikipedia.org/wiki/Autarky) in code: build sovereign software, enforce your `devops` security.
+- [Quickstart](./docs/QUICKSTART.md)
+- [User Flow](./docs/USER-FLOW.md)
+- [Git Hooks](./docs/GIT-HOOKS.md)
+- [Technical Architecture](./docs/TECHNICAL-ARCHITECTURE.md)
+- [Architecture (Short)](./docs/ARCHITECTURE-SHORT.md)
+- [Docs Index](./docs/README.md)
+
+Older long-form hackathon docs remain available in [docs/_legacy](./docs/_legacy/).
 
 ---
 
-Built at [ETHRome](https://www.ethrome.org/) 2025.
+## Tech Stack
+
+| Component | Technology | Purpose |
+| --- | --- | --- |
+| Governance | **Safe Multisig** | Threshold approval and release governance |
+| Immutability | **ENS NameWrapper** | Fuse-burned, versioned subdomains |
+| Storage | **IPFS + Storacha** | Content-addressed decentralized hosting |
+| Automation | **Git Hooks / CLI** | Deployment workflow automation |
+| Language | **Node.js / TypeScript** | CLI and release tooling |
+
+---
+
+## What We Shipped For PL Genesis
+
+This hackathon pass updated the original project into the current `0.1.2` implementation.
+
+### Product and CLI updates
+
+- added `promote` for moving mutable channels to immutable versions
+- added `rollback` as an explicit alias for channel rollback flows
+- added `channels` to inspect channel state and create missing channel subdomains via Safe proposals
+- improved `setup` so git hooks can run a custom build command before deploy
+
+### Deployment and infra updates
+
+- standardized on `autark` config naming while keeping backward compatibility for legacy config names
+- improved Storacha CLI integration and error handling for login and space-selection failures
+- removed the unused native Storacha provider path to keep one clear upload implementation
+- removed the vulnerable Safe starter kit dependency and moved runtime Safe handling to `protocol-kit` + `api-kit`
+- fixed the published CLI entrypoint so the globally installed `autark` binary works correctly
+
+### Demo and documentation updates
+
+- updated the example site for the PL Genesis demo flow
+- restored active docs for user flow, git hooks, and technical architecture on the `genesis` branch
+- removed old hackathon submission references from the main project entry points
+
+Autark is now published at version `0.1.2`.
+
+---
+
+Built for the PL Genesis hackathon and continued here as an actively iterated solo project.

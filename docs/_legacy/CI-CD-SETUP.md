@@ -28,8 +28,9 @@ Go to your repository Settings → Secrets and variables → Actions, and add th
 |-------------|-------------|---------|
 | `SEPOLIA_RPC_URL` | Alchemy/Infura RPC endpoint | `https://eth-sepolia.g.alchemy.com/v2/YOUR_KEY` |
 | `SAFE_ADDRESS` | Your Safe multisig address | `0xA5ED8dd265c8e9154FaBf8E66Cb3aF16002261A3` |
-| `SEPOLIA_OWNER_ADDRESS` | Safe signer address | `0xE53eC90471B604f24b5Ab66A61F18e30579D2b1F` |
+| `SEPOLIA_ENS_DOMAIN` | ENS parent domain on Sepolia | `myproject.eth` |
 | `SEPOLIA_OWNER_PK` | Safe signer private key | `0xfd4e02...` |
+| `SAFE_API_KEY` | Safe Transaction Service API key | `sk_live_abc123...` |
 | `STORACHA_TOKEN` | (Optional) Storacha auth token | Get from `storacha token` |
 
 **Security Note:** The `SEPOLIA_OWNER_PK` is only used to *propose* transactions to Safe. It cannot execute transactions alone (requires threshold approvals).
@@ -40,7 +41,7 @@ Copy the workflow file to your project:
 
 ```bash
 mkdir -p .github/workflows
-cp path/to/secure-deploy/.github/workflows/deploy.yml .github/workflows/
+cp path/to/autark/.github/workflows/deploy.yml .github/workflows/
 ```
 
 ### 3. Customize Workflow
@@ -55,9 +56,7 @@ Edit `.github/workflows/deploy.yml` to match your project:
 # Update the build output directory
 - name: Deploy to ENS + IPFS
   run: |
-    secure-deploy deploy dist \  # Change 'dist' to your build directory
-      --network sepolia \
-      --ens-domain rome.eth \  # Change to your domain
+    npm run cli -- deploy dist --network sepolia  # Change 'dist' to your build directory
 ```
 
 ### 4. Deployment Modes
@@ -180,12 +179,12 @@ jobs:
   deploy-staging:
     if: github.ref == 'refs/heads/develop'
     steps:
-      - run: secure-deploy deploy dist --ens-domain staging.rome.eth
+      - run: autark deploy dist --ens-domain staging.rome.eth
 
   deploy-production:
     if: github.ref == 'refs/heads/main'
     steps:
-      - run: secure-deploy deploy dist --ens-domain rome.eth
+      - run: autark deploy dist --ens-domain rome.eth
 ```
 
 ### Add Slack/Discord Notifications
@@ -207,7 +206,7 @@ jobs:
 ### View Deployment Status
 
 - **GitHub Actions**: Repository → Actions tab
-- **Safe Proposals**: https://app.safe.global/sepolia.safe/YOUR_SAFE_ADDRESS/transactions/queue
+- **Safe Proposals**: https://app.safe.global/transactions/queue?safe=sep:YOUR_SAFE_ADDRESS
 - **ENS Status**: `npm run status`
 
 ### Debugging Failed Deployments
@@ -230,21 +229,21 @@ jobs:
 ## Example: Complete Setup
 
 ```bash
-# 1. Setup secure-deploy in your project
+# 1. Setup autark in your project
 cd my-frontend-app
-npm install --save-dev @your-org/secure-deploy
+npm install -g autark
 
 # 2. Add deploy script to package.json
 {
   "scripts": {
-    "deploy": "secure-deploy deploy dist"
+    "deploy": "autark deploy dist"
   }
 }
 
 # 3. Copy workflow file
 mkdir -p .github/workflows
 curl -o .github/workflows/deploy.yml \
-  https://raw.githubusercontent.com/your-org/secure-deploy/main/.github/workflows/deploy.yml
+  https://raw.githubusercontent.com/MihRazvan/ETHRome_hackathon/main/.github/workflows/deploy.yml
 
 # 4. Configure secrets in GitHub UI
 # (See step 1 above)

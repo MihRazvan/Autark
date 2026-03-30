@@ -1,4 +1,4 @@
-name: Secure Deploy to ENS + IPFS
+name: Autark Deploy to ENS + IPFS
 
 on:
   push:
@@ -29,36 +29,25 @@ jobs:
         run: npm run build
 
       - name: Install Storacha CLI
-        run: npm install -g @storacha/client
+        run: npm install -g @storacha/cli
 
       - name: Setup Storacha credentials
+        if: ${{ secrets.STORACHA_TOKEN != '' }}
         run: |
           mkdir -p ~/.storacha
           echo "${{ secrets.STORACHA_TOKEN }}" > ~/.storacha/token
-        if: env.STORACHA_TOKEN != ''
-
-      - name: Install secure-deploy CLI
-        run: |
-          cd path/to/secure-deploy
-          npm install
-          npm run build
-          npm link
 
       - name: Deploy to ENS + IPFS
         run: |
-          secure-deploy deploy dist \
-            --network sepolia \
-            --ens-domain rome.eth \
-            --rpc-url ${{ secrets.SEPOLIA_RPC_URL }} \
-            --safe-address ${{ secrets.SAFE_ADDRESS }} \
-            --safe-threshold 2 \
-            --owner-address ${{ secrets.SEPOLIA_OWNER_ADDRESS }} \
-            --owner-pk ${{ secrets.SEPOLIA_OWNER_PK }}
+          npm run cli -- deploy dist --network sepolia
         env:
           SEPOLIA_RPC_URL: ${{ secrets.SEPOLIA_RPC_URL }}
+          MAINNET_RPC_URL: ${{ secrets.MAINNET_RPC_URL }}
           SAFE_ADDRESS: ${{ secrets.SAFE_ADDRESS }}
-          SEPOLIA_OWNER_ADDRESS: ${{ secrets.SEPOLIA_OWNER_ADDRESS }}
+          SEPOLIA_ENS_DOMAIN: ${{ secrets.SEPOLIA_ENS_DOMAIN }}
+          ENS_DOMAIN: ${{ secrets.ENS_DOMAIN }}
           SEPOLIA_OWNER_PK: ${{ secrets.SEPOLIA_OWNER_PK }}
+          SAFE_API_KEY: ${{ secrets.SAFE_API_KEY }}
 
       - name: Comment on commit with deployment info
         uses: actions/github-script@v7
@@ -74,5 +63,5 @@ jobs:
               body: `🚀 **Deployment Initiated**\n\n` +
                     `Commit: ${shortSha}\n` +
                     `Safe Transaction created for approval.\n\n` +
-                    `View pending transactions: https://app.safe.global/sepolia.safe/${{ secrets.SAFE_ADDRESS }}/transactions/queue`
+                    `View pending transactions: https://app.safe.global/transactions/queue?safe=sep:${{ secrets.SAFE_ADDRESS }}`
             })

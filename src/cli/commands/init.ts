@@ -12,10 +12,10 @@ import { Logger } from '../../lib/logger.js'
 export async function initCommand(): Promise<void> {
   const logger = new Logger()
 
-  logger.header('🔧 Initialize secure-deploy')
+  logger.header('🔧 Initialize AUTARK')
   logger.newline()
 
-  const configTemplate = `# Secure Deploy Configuration
+  const configTemplate = `# AUTARK Configuration
 # You can also use environment variables or CLI flags
 
 # Network Configuration
@@ -32,7 +32,9 @@ safeApiKey: your-safe-api-key
 # Owner/Signer Configuration (for Safe operations)
 ownerPrivateKey: 0x...
 
-# Storacha Configuration (optional, uses CLI by default)
+# Storacha Configuration
+# Current deploy flow uses your local Storacha CLI login + selected space.
+# The fields below are reserved for a future native Storacha integration.
 # storachaKey: ...
 # storachaProof: ...
 
@@ -46,16 +48,16 @@ debug: false
 `
 
   try {
-    const configPath = resolve(process.cwd(), 'secure-deploy.config.yaml')
+    const configPath = resolve(process.cwd(), 'autark.config.yaml')
     writeFileSync(configPath, configTemplate)
 
-    logger.success('Created config file: secure-deploy.config.yaml')
+    logger.success('Created config file: autark.config.yaml')
     logger.newline()
 
     logger.log('Next steps:')
     logger.log('  1. Edit the config file with your values')
     logger.log('  2. Or use environment variables (see .env.example)')
-    logger.log('  3. Deploy with: secure-deploy deploy ./dist')
+    logger.log('  3. Deploy with: autark deploy ./dist')
     logger.newline()
 
   } catch (error: any) {

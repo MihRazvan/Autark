@@ -55,11 +55,24 @@ export interface DeployConfig extends Config {
  */
 export function loadConfig(cliOptions: Partial<Config> = {}): Config {
   // Load from config file (lowest priority)
-  const explorer = cosmiconfigSync('secure-deploy', {
+  const explorer = cosmiconfigSync('autark', {
     searchPlaces: [
+      'autark.config.yaml',
+      'autark.config.yml',
+      'autark.config.js',
+      'autark.config.json',
+      '.autarkrc',
+      '.autarkrc.yaml',
+      '.autarkrc.yml',
+      '.autarkrc.json',
+      // Legacy names (backward compatibility)
+      'secure-deploy.config.yaml',
+      'secure-deploy.config.yml',
       'secure-deploy.config.js',
       'secure-deploy.config.json',
       '.secure-deployrc',
+      '.secure-deployrc.yaml',
+      '.secure-deployrc.yml',
       '.secure-deployrc.json',
       'package.json',
     ],

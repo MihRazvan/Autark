@@ -18,6 +18,6 @@ updateTime();
 setInterval(updateTime, 1000);
 
 // Console message
-console.log('🚀 Secure Deploy - ETHRome Hackathon 2024');
+console.log('🚀 Autark - PL Genesis Hackathon');
 console.log('This site was deployed to IPFS using Storacha!');
-console.log('Learn more: https://github.com/your-repo/secure-deploy');
+console.log('Learn more: https://github.com/your-repo/autark');

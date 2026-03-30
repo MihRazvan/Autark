@@ -1,27 +1,26 @@
 {
   "name": "autark",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Decentralized frontend deployment with Safe multisig governance and immutable ENS versioning",
   "type": "module",
   "bin": {
-    "autark": "./dist/cli/index.js"
+    "autark": "dist/cli/index.js"
   },
   "scripts": {
     "build": "rm -rf dist && tsc && chmod +x ./dist/cli/index.js",
     "dev": "tsx src/cli/index.ts",
     "cli": "tsx src/cli/index.ts",
-    "test": "node --test",
+    "test": "tsx --test src/test/unit/**/*.test.ts",
+    "test:smoke": "tsx --test src/test/unit/**/*.test.ts",
     "test:ipfs": "tsx src/test/test-ipfs-simple.ts",
     "test:ens": "tsx src/test/test-ens.ts",
     "test:complete": "tsx src/test/test-complete-versioning.ts",
     "check:domain": "tsx src/test/check-domain.ts",
     "burn-parent-fuses": "tsx src/test/burn-parent-fuses.ts",
     "deploy:safe": "tsx src/test/deploy-with-safe.ts",
-    "deploy:safe-sdk": "tsx src/test/deploy-with-safe-sdk.ts",
     "deploy:safe-direct": "tsx src/test/deploy-safe-direct.ts",
     "transfer-to-safe": "tsx src/test/transfer-to-safe.ts",
     "set-contenthash": "tsx src/test/set-contenthash-via-safe.ts",
-    "set-contenthash-sdk": "tsx src/test/set-contenthash-sdk.ts",
     "typecheck": "tsc --noEmit"
   },
   "keywords": [
@@ -44,12 +43,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MihRazvan/ETHRome_hackathon.git"
+    "url": "git+https://github.com/MihRazvan/Autark.git"
   },
   "bugs": {
-    "url": "https://github.com/MihRazvan/ETHRome_hackathon/issues"
+    "url": "https://github.com/MihRazvan/Autark/issues"
   },
-  "homepage": "https://github.com/MihRazvan/ETHRome_hackathon#readme",
+  "homepage": "https://github.com/MihRazvan/Autark#readme",
   "files": [
     "dist",
     "README.md",
@@ -62,14 +61,12 @@
   "dependencies": {
     "@safe-global/api-kit": "^4.0.0",
     "@safe-global/protocol-kit": "^6.1.1",
-    "@safe-global/sdk-starter-kit": "^3.0.1",
-    "@storacha/client": "^1.8.2",
+    "autark": "^0.1.2",
     "chalk": "^5.6.2",
     "commander": "^11.1.0",
     "cosmiconfig": "^9.0.0",
     "dotenv": "^17.2.3",
     "ethers": "^6.15.0",
-    "files-from-path": "^1.0.4",
     "multiformats": "^13.4.0",
     "ora": "^6.3.1",
     "ox": "^0.8.7",
