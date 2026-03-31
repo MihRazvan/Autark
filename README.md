@@ -133,12 +133,6 @@ This hackathon pass updated the original project into the current `0.1.2` implem
 - removed the vulnerable Safe starter kit dependency and moved runtime Safe handling to `protocol-kit` + `api-kit`
 - fixed the published CLI entrypoint so the globally installed `autark` binary works correctly
 
-### Demo and documentation updates
-
-- updated the example site for the PL Genesis demo flow
-- restored active docs for user flow, git hooks, and technical architecture on the main branch
-- removed old hackathon submission references from the main project entry points
-
 Autark is now published at version `0.1.2`.
 
 ---
